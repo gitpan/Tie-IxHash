@@ -1,0 +1,20 @@
+---
+abstract: 'ordered associative arrays for Perl'
+author:
+  - 'Gurusamy Sarathy        gsar@umich.edu'
+generated_by: 'Module::Build version 0.3603'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Tie-IxHash
+provides:
+  Tie::IxHash:
+    file: lib/Tie/IxHash.pm
+    version: 1.22
+requires:
+  perl: 5.003
+resources:
+  license: http://dev.perl.org/licenses/
+  repository: git://github.com/chorny/Tie-IxHash.git
+version: 1.22
