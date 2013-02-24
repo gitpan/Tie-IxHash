@@ -6,7 +6,7 @@
 # See below for documentation.
 #
 
-require 5.003;
+require 5.005;
 
 package Tie::IxHash;
 use strict;
@@ -15,7 +15,7 @@ require Tie::Hash;
 use vars qw/@ISA $VERSION/;
 @ISA = qw(Tie::Hash);
 
-$VERSION = $VERSION = '1.22';
+$VERSION = $VERSION = '1.23';
 
 #
 # standard tie functions
@@ -65,7 +65,10 @@ sub DELETE {
   if (exists $s->[0]{$k}) {
     my($i) = $s->[0]{$k};
     for ($i+1..$#{$s->[1]}) {    # reset higher elt indexes
-      $s->[0]{$s->[1][$_]}--;    # timeconsuming, is there is better way?
+      $s->[0]{ $s->[1][$_] }--;    # timeconsuming, is there is better way?
+    }
+    if ( $i == $s->[3]-1 ) {
+      $s->[3]--;
     }
     delete $s->[0]{$k};
     splice @{$s->[1]}, $i, 1;
@@ -84,7 +87,7 @@ sub FIRSTKEY {
 }
 
 sub NEXTKEY {
-  return $_[0][1][$_[0][3]++] if ($_[0][3] <= $#{$_[0][1]});
+  return $_[0][1][ $_[0][3]++ ] if ($_[0][3] <= $#{ $_[0][1] } );
   return undef;
 }
 
@@ -97,6 +100,15 @@ sub NEXTKEY {
 #
 
 sub new { TIEHASH(@_) }
+
+sub Clear {
+  my $s = shift;
+  $s->[0] = {};   # hashkey index
+  $s->[1] = [];   # array of keys
+  $s->[2] = [];   # array of data
+  $s->[3] = 0;    # iter count
+  return;
+}
 
 #
 # add pairs to end of indexed hash
@@ -434,7 +446,7 @@ Tie::IxHash - ordered associative arrays for Perl
 
     # simple usage
     use Tie::IxHash;
-    tie HASHVARIABLE, Tie::IxHash [, LIST];
+    tie HASHVARIABLE, 'Tie::IxHash' [, LIST];
 
     # OO interface with more powerful features
     use Tie::IxHash;
@@ -555,6 +567,10 @@ Reorders the IxHash elements by textual comparison of the keys.
 
 Reorders the IxHash elements by textual comparison of the values.
 
+=item Clear
+
+Resets the IxHash to its pristine state: with no elements at all.
+
 =back
 
 
@@ -563,7 +579,7 @@ Reorders the IxHash elements by textual comparison of the values.
     use Tie::IxHash;
 
     # simple interface
-    $t = tie(%myhash, Tie::IxHash, 'a' => 1, 'b' => 2);
+    $t = tie(%myhash, 'Tie::IxHash', 'a' => 1, 'b' => 2);
     %myhash = (first => 1, second => 2, third => 3);
     $myhash{fourth} = 4;
     @keys = keys %myhash;
@@ -597,6 +613,9 @@ Reorders the IxHash elements by textual comparison of the values.
 You cannot specify a negative length to C<Splice>. Negative indexes are OK,
 though.
 
+
+=head1 NOTE
+
 Indexing always begins at 0 (despite the current C<$[> setting) for 
 all the functions.
 
@@ -622,7 +641,7 @@ modify it under the same terms as Perl itself.
 
 =head1 VERSION
 
-Version 1.22    27 February 2010
+Version 1.23
 
 
 =head1 SEE ALSO

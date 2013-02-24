@@ -3,12 +3,13 @@ WriteMakefile1(
   NAME => "Tie::IxHash",
   VERSION_FROM => 'lib/Tie/IxHash.pm',
   LICENSE => 'perl',
-  MIN_PERL_VERSION => '5.003',
+  MIN_PERL_VERSION => '5.005',
   META_MERGE => {
     resources => {
       repository => 'git://github.com/chorny/Tie-IxHash.git',
     },
   },
+  PL_FILES => {},
   #SKIP => [qw(static dynamic)],
   #'linkext' => {LINKTYPE => '' },
   #'dist' => {COMPRESS=>'gzip -9f', SUFFIX => 'gz'},

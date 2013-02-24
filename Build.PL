@@ -6,7 +6,10 @@ my $build = Module::Build->new(
   'auto_configure_requires' => 0,
   'module_name' => 'Tie::IxHash',
   'requires' => {
-    'perl' => '5.003'
+    'perl' => '5.005',
+  },
+  'build_requires' => {
+    'Test::More' => 0,
   },
   'meta_merge' => {
     'resources' => {
@@ -14,7 +17,7 @@ my $build = Module::Build->new(
     }
   },
   'license' => 'perl',
-  'dist_version_from' => 'lib/Tie/IxHash.pm'
+  'dist_version_from' => 'lib/Tie/IxHash.pm',
 );
 
 $build->create_build_script();
